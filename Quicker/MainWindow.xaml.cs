@@ -23,51 +23,50 @@ namespace Quicker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IKeyboardEventSource m_Keyboard;
         public MainWindow()
         {
             InitializeComponent();
-            Task.Run(() => SetKey());
-            System.Diagnostics.Debug.WriteLine("Im not stopped");    
+            System.Diagnostics.Debug.WriteLine("Im not stopped");
+            Subscribe();
         }
 
-        public void SetKey()
+        private void Subscribe(IKeyboardEventSource Keyboard)
         {
-            using (var Keyboard = WindowsInput.Capture.Global.KeyboardAsync())
+            this.m_Keyboard?.Dispose();
+            this.m_Keyboard = Keyboard;
+
+            if (Keyboard != default)
             {
-
-                var Listener = new WindowsInput.Events.Sources.TextSequenceEventSource(Keyboard, new WindowsInput.Events.TextClick("aaa"));
-                Listener.Triggered += (x, y) => Listener_Triggered(Keyboard, x, y); ;
-                Listener.Enabled = true;
-                while (true)
-                {
-
-                }
+                Keyboard.KeyEvent += this.Keyboard_KeyEvent;
             }
-            
-
         }
 
-        
-
-        private static async void Listener_Triggered(IKeyboardEventSource Keyboard, object sender, WindowsInput.Events.Sources.TextSequenceEventArgs e)
+        private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
-            e.Input.Next_Hook_Enabled = false;
-
-            var ToSend = WindowsInput.Simulate.Events();
-            for (int i = 1; i < e.Sequence.Text.Length; i++)
-            {
-                ToSend.Click(WindowsInput.Events.KeyCode.Backspace);
-            }
-
-            ToSend.Click("Always ask albert!");
-
-            //We suspend keyboard events because we don't want to accidently trigger a recursive loop if our
-            //sending text actually had 'aaa' in it.
-            using (Keyboard.Suspend())
-            {
-                await ToSend.Invoke();
-            }
+            Log(e);
         }
+
+        private void Log<T>(EventSourceEventArgs<T> e, string Notes = "") where T : InputEvent
+        {
+            var NewContent = "";
+            NewContent += $"{e.Timestamp}: {Notes}\r\n";
+            foreach (var item in e.Data.Events)
+            {
+                NewContent += $"  {item}\r\n";
+            }
+            System.Diagnostics.Debug.WriteLine(NewContent);
+
+        }
+
+        private void Subscribe()
+        {
+            var Keyboard = default(IKeyboardEventSource);
+            Keyboard = WindowsInput.Capture.Global.Keyboard();
+
+            Subscribe(Keyboard);
+        }
+
     }
     
     
