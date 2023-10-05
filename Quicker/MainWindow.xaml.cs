@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowsInput;
 using WindowsInput.Events.Sources;
+using WindowsInput.Events;
+using Quicker;
 
 namespace Quicker
 {
@@ -28,8 +30,11 @@ namespace Quicker
         public MainWindow()
         {
             InitializeComponent();
-            System.Diagnostics.Debug.WriteLine("Im not stopped");
+            //Create a instance of Match for the test
+            
+            
             Subscribe();
+            m_list.append("11", test1);
         }
 
         private void Subscribe(IKeyboardEventSource Keyboard)
@@ -42,11 +47,27 @@ namespace Quicker
                 Keyboard.KeyEvent += this.Keyboard_KeyEvent;
             }
         }
-
+        List<string> match_list = new List<string> { "11" ,"12"};
+        Match test1 = new Match("11", "engine 11");
+        MatchList m_list = new MatchList();
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
-            KeyList += e.Data.ToString();
-            System.Diagnostics.Debug.WriteLine(KeyList);
+            //System.Diagnostics.Debug.WriteLine(e.Data);
+
+            var key = e.Data.TextClick?.Text;
+            if (key==" ")
+            {
+                //TODO: Dictをキーで検索 ヒットしたマッチインスタンスの置き換えメソッドを実行
+                if (test1.isMatch(ref KeyList)){
+                    System.Diagnostics.Debug.WriteLine("Matched!!");
+                }
+                KeyList = "";                
+            }
+            else
+            {
+                KeyList += key;
+            }
+            //System.Diagnostics.Debug.WriteLine(KeyList);
             //Log(e);
         }
 
@@ -58,7 +79,7 @@ namespace Quicker
             {
                 NewContent += $"  {item}\r\n";
             }
-            System.Diagnostics.Debug.WriteLine(NewContent);
+            //System.Diagnostics.Debug.WriteLine(NewContent);
 
         }
 
