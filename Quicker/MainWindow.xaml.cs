@@ -24,6 +24,7 @@ namespace Quicker
     public partial class MainWindow : Window
     {
         private IKeyboardEventSource m_Keyboard;
+        private string KeyList = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -44,7 +45,9 @@ namespace Quicker
 
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
-            Log(e);
+            KeyList += e.Data.ToString();
+            System.Diagnostics.Debug.WriteLine(KeyList);
+            //Log(e);
         }
 
         private void Log<T>(EventSourceEventArgs<T> e, string Notes = "") where T : InputEvent
