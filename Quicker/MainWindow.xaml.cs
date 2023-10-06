@@ -25,15 +25,13 @@ namespace Quicker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IKeyboardEventSource m_Keyboard;
+        public IKeyboardEventSource m_Keyboard;
         private string KeyList = "";
         private MatchList m_list;
 
         public MainWindow()
         {
-            InitializeComponent();
-            //Create a instance of MatchList for the test
-            
+            InitializeComponent();           
             Subscribe();
             Match test1 = new Match("11", "engine 11");
             this.m_list= new MatchList();
@@ -50,50 +48,40 @@ namespace Quicker
                 Keyboard.KeyEvent += this.Keyboard_KeyEvent;
             }
         }
-        List<string> match_list = new List<string> { "11" ,"12"};
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
-            //System.Diagnostics.Debug.WriteLine(e.Data);
+            System.Diagnostics.Debug.WriteLine(e.Data);
 
             var key = e.Data.TextClick?.Text;
-            if (key==" ")
+            if (key == " ")
             {
-                //TODO: Dictをキーで検索 ヒットしたマッチインスタンスの置き換えメソッドを実行
-                var result = new Match(); //1findした結果が代入される変数
+                var result = new Match("", ""); //findした結果が代入される変数
 
                 if (m_list.FindMatch(KeyList, ref result))
                 {
-                    //System.Diagnostics.Debug.WriteLine("Matched!!");
-                    
-                    result.Perform(this.m_Keyboard);
-                    //Thread.Sleep(1000);
+                    result.Perform(ref this.m_Keyboard);
                 }
-                KeyList = "";                
+                KeyList = "";
+
+            }
+            else if (e.Data.KeyDown?.Key == KeyCode.Backspace)
+            {
+                if (KeyList.Length > 0)
+                {
+                    KeyList = KeyList.Remove(KeyList.Length - 1);
+                }
             }
             else
             {
                 KeyList += key;
             }
             //System.Diagnostics.Debug.WriteLine(KeyList);
-            //Log(e);
-        }
-
-        private void Log<T>(EventSourceEventArgs<T> e, string Notes = "") where T : InputEvent
-        {
-            var NewContent = "";
-            NewContent += $"{e.Timestamp}: {Notes}\r\n";
-            foreach (var item in e.Data.Events)
-            {
-                NewContent += $"  {item}\r\n";
-            }
-            //System.Diagnostics.Debug.WriteLine(NewContent);
-
         }
 
         private void Subscribe()
         {
-            var Keyboard = default(IKeyboardEventSource);
-            Keyboard = WindowsInput.Capture.Global.Keyboard();
+            //var Keyboard = default(IKeyboardEventSource);
+            var Keyboard = WindowsInput.Capture.Global.Keyboard();
 
             Subscribe(Keyboard);
         }

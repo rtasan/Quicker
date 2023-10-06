@@ -13,9 +13,8 @@ namespace Quicker
         {
             this.Matches = new Dictionary<string, Match>();
         }
-        public bool append(string key, Match match){
-            Matches.TryAdd(key, match);
-            return true;
+        public bool append(string key, Match match){            
+            return Matches.TryAdd(key, match);
         }
         public bool FindMatch(string key, ref Match result)
         {
