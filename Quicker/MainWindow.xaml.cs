@@ -27,13 +27,16 @@ namespace Quicker
     {
         private IKeyboardEventSource m_Keyboard;
         private string KeyList = "";
+        private MatchList m_list;
+
         public MainWindow()
         {
             InitializeComponent();
-            //Create a instance of Match for the test
-            
+            //Create a instance of MatchList for the test
             
             Subscribe();
+            Match test1 = new Match("11", "engine 11");
+            this.m_list= new MatchList();
             m_list.append("11", test1);
         }
 
@@ -48,8 +51,6 @@ namespace Quicker
             }
         }
         List<string> match_list = new List<string> { "11" ,"12"};
-        Match test1 = new Match("11", "engine 11");
-        MatchList m_list = new MatchList();
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
             //System.Diagnostics.Debug.WriteLine(e.Data);
@@ -58,8 +59,14 @@ namespace Quicker
             if (key==" ")
             {
                 //TODO: Dictをキーで検索 ヒットしたマッチインスタンスの置き換えメソッドを実行
-                if (test1.isMatch(ref KeyList)){
-                    System.Diagnostics.Debug.WriteLine("Matched!!");
+                var result = new Match(); //1findした結果が代入される変数
+
+                if (m_list.FindMatch(KeyList, ref result))
+                {
+                    //System.Diagnostics.Debug.WriteLine("Matched!!");
+                    
+                    result.Perform(this.m_Keyboard);
+                    //Thread.Sleep(1000);
                 }
                 KeyList = "";                
             }
