@@ -17,6 +17,7 @@ using WindowsInput;
 using WindowsInput.Events.Sources;
 using WindowsInput.Events;
 using Quicker;
+using System.IO;
 
 namespace Quicker
 {
@@ -31,11 +32,9 @@ namespace Quicker
 
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
             Subscribe();
-            Match test1 = new Match("11", "engine 11");
-            this.m_list= new MatchList();
-            m_list.append("11", test1);
+            this.m_list = new MatchList("test.csv");
         }
 
         private void Subscribe(IKeyboardEventSource Keyboard)
@@ -48,21 +47,39 @@ namespace Quicker
                 Keyboard.KeyEvent += this.Keyboard_KeyEvent;
             }
         }
+        private static Dictionary<string, string> KeyPair = new Dictionary<string, string>()
+        {
+            {"),","),"},{").","). "},{",",","},{".",". "},{")",")"},
+        };
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
-            System.Diagnostics.Debug.WriteLine(e.Data);
+            //System.Diagnostics.Debug.WriteLine(e.Data);
+            //System.Diagnostics.Debug.WriteLine(e.Data.TextClick);
 
             var key = e.Data.TextClick?.Text;
             if (key == " ")
             {
                 var result = new Match("", ""); //findした結果が代入される変数
-
-                if (m_list.FindMatch(KeyList, ref result))
+                string value; 
+                bool isPlural=false;
+                if (KeyList.EndsWith("s"))
                 {
-                    result.Perform(ref this.m_Keyboard);
+                    isPlural= true;
+                    KeyList = KeyList.Remove(KeyList.Length - 1);
                 }
+                if(KeyPair.TryGetValue(((KeyList.Length>=2)?KeyList.Substring(KeyList.Length - 2):""), out value)|| KeyPair.TryGetValue(KeyList.Substring(KeyList.Length - 1), out value))
+                {
+                    KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
+                    if (m_list.FindMatch(KeyList, ref result))
+                    {
+                        result.Perform(ref this.m_Keyboard, value, isPlural);
+                    }
+                }
+                else if(m_list.FindMatch(KeyList, ref result))
+                {
+                    result.Perform(ref this.m_Keyboard, null, isPlural);
+                }                              
                 KeyList = "";
-
             }
             else if (e.Data.KeyDown?.Key == KeyCode.Backspace)
             {
@@ -75,7 +92,6 @@ namespace Quicker
             {
                 KeyList += key;
             }
-            //System.Diagnostics.Debug.WriteLine(KeyList);
         }
 
         private void Subscribe()
