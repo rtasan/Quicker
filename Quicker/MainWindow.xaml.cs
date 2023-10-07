@@ -34,7 +34,7 @@ namespace Quicker
         {
             InitializeComponent();
             Subscribe();
-            this.m_list = new MatchList("test.csv");
+            this.m_list = new MatchList("C:\\Users\\Reiko\\Desktop\\test.csv");
         }
 
         private void Subscribe(IKeyboardEventSource Keyboard)
@@ -49,7 +49,7 @@ namespace Quicker
         }
         private static Dictionary<string, string> KeyPair = new Dictionary<string, string>()
         {
-            {"),","),"},{").","). "},{",",","},{".",". "},{")",")"},
+            {"),","),"},{").","). "},{",",","},{".",". "},{")",")"}
         };
         private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
         {
@@ -74,6 +74,10 @@ namespace Quicker
                     {
                         result.Perform(ref this.m_Keyboard, value, isPlural);
                     }
+                }else if (KeyList.EndsWith("#"))
+                {
+                    KeyList = KeyList.Remove(KeyList.Length - 1);
+                    result.OnlyNumber(ref this.m_Keyboard, null, KeyList);
                 }
                 else if(m_list.FindMatch(KeyList, ref result))
                 {
