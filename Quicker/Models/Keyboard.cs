@@ -2,41 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsInput;
 using WindowsInput.Events.Sources;
 using WindowsInput.Events;
-using Quicker;
-using System.IO;
 
-namespace Quicker
+namespace Quicker.Models
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    internal class Keyboard
     {
-        public IKeyboardEventSource m_Keyboard;
+        public IKeyboardEventSource? m_Keyboard;
         private string KeyList = "";
         private MatchList m_list;
 
-        public MainWindow()
+        public Keyboard(MatchList matchList)
         {
-            InitializeComponent();
-            Subscribe();
-            this.m_list = new MatchList("C:\\Users\\Reiko\\Desktop\\test.csv");
+            this.m_list = matchList;
+            Subscribe(); //For testing purposes
         }
-
         private void Subscribe(IKeyboardEventSource Keyboard)
         {
             this.m_Keyboard?.Dispose();
@@ -51,7 +33,7 @@ namespace Quicker
         {
             {"),","),"},{").","). "},{",",","},{".",". "},{")",")"}
         };
-        private void Keyboard_KeyEvent(object sender, EventSourceEventArgs<KeyboardEvent> e)
+        private void Keyboard_KeyEvent(object? sender, EventSourceEventArgs<KeyboardEvent> e)
         {
             //System.Diagnostics.Debug.WriteLine(e.Data);
             //System.Diagnostics.Debug.WriteLine(e.Data.TextClick);
@@ -60,29 +42,30 @@ namespace Quicker
             if (key == " ")
             {
                 var result = new Match("", ""); //findした結果が代入される変数
-                string value; 
-                bool isPlural=false;
+                string value;
+                bool isPlural = false;
                 if (KeyList.EndsWith("s"))
                 {
-                    isPlural= true;
+                    isPlural = true;
                     KeyList = KeyList.Remove(KeyList.Length - 1);
                 }
-                if(KeyPair.TryGetValue(((KeyList.Length>=2)?KeyList.Substring(KeyList.Length - 2):""), out value)|| KeyPair.TryGetValue(KeyList.Substring(KeyList.Length - 1), out value))
+                if (KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(KeyList.Substring(KeyList.Length - 1), out value))
                 {
                     KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
                     if (m_list.FindMatch(KeyList, ref result))
                     {
                         result.Perform(ref this.m_Keyboard, value, isPlural);
                     }
-                }else if (KeyList.EndsWith("#"))
+                }
+                else if (KeyList.EndsWith("#"))
                 {
                     KeyList = KeyList.Remove(KeyList.Length - 1);
                     result.OnlyNumber(ref this.m_Keyboard, null, KeyList);
                 }
-                else if(m_list.FindMatch(KeyList, ref result))
+                else if (m_list.FindMatch(KeyList, ref result))
                 {
                     result.Perform(ref this.m_Keyboard, null, isPlural);
-                }                              
+                }
                 KeyList = "";
             }
             else if (e.Data.KeyDown?.Key == KeyCode.Backspace)
@@ -98,7 +81,7 @@ namespace Quicker
             }
         }
 
-        private void Subscribe()
+        public void Subscribe()
         {
             //var Keyboard = default(IKeyboardEventSource);
             var Keyboard = WindowsInput.Capture.Global.Keyboard();
@@ -106,7 +89,9 @@ namespace Quicker
             Subscribe(Keyboard);
         }
 
+        public void Unsubscribe()
+        {
+            //TODO: Unsubscribe
+        }
     }
-    
-    
 }

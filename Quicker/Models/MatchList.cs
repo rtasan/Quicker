@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quicker
+namespace Quicker.Models
 {
     internal class MatchList
     {
-        private Dictionary<string ,Match> Matches;
+        private Dictionary<string, Match> Matches;
         public MatchList()
         {
-            this.Matches = new Dictionary<string, Match>();
+            Matches = new Dictionary<string, Match>();
         }
         public MatchList(string path)
         {
-            this.Matches = new Dictionary<string, Match>();
+            Matches = new Dictionary<string, Match>();
             using (var reader = new StreamReader(path))
             {
                 while (!reader.EndOfStream)
@@ -26,18 +26,19 @@ namespace Quicker
                     var keyword = values[0].Trim();
                     var snippet = values[1].Trim();
                     Match match = new Match(keyword, snippet);
-                    this.append(values[0].Trim(), match);
+                    append(values[0].Trim(), match);
                 }
             }
         }
-        public bool append(string key, Match match){            
+        public bool append(string key, Match match)
+        {
             return Matches.TryAdd(key, match);
         }
         public bool FindMatch(string key, ref Match result)
         {
             return Matches.TryGetValue(key, out result);
         }
-        
-        
+
+
     }
 }
