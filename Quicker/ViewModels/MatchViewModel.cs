@@ -26,6 +26,7 @@ namespace Quicker.ViewModels
 
         //Modelのインスタンスを保持するプロパティ
         public Keyboard Keyboard { get; set; }
+        public MatchList MatchList { get; set; }
         //Todo:MatchListも多分ここ
 
         public MatchViewModel()
@@ -34,6 +35,7 @@ namespace Quicker.ViewModels
             DisableMatchCommand = new DisableMatchCommand(this);
             this.m_list = new MatchList("C:\\Users\\Reiko\\Desktop\\test.csv");
             Keyboard = new Keyboard(this.m_list);
+            MatchList = new MatchList();
         }
 
 

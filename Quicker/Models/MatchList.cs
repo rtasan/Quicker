@@ -10,25 +10,16 @@ namespace Quicker.Models
     internal class MatchList
     {
         private Dictionary<string, Match> Matches;
+
         public MatchList()
         {
             Matches = new Dictionary<string, Match>();
         }
-        public MatchList(string path)
+        public bool FromCsv(string path)
         {
-            Matches = new Dictionary<string, Match>();
-            using (var reader = new StreamReader(path))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-                    var keyword = values[0].Trim();
-                    var snippet = values[1].Trim();
-                    Match match = new Match(keyword, snippet);
-                    append(values[0].Trim(), match);
-                }
-            }
+            CsvFile csv = new CsvFile(path);
+            Matches = csv.ReadCsv(); //Todo: 読み込みに失敗したときの処理でfalseを返す
+            return true;
         }
         public bool append(string key, Match match)
         {
@@ -38,7 +29,5 @@ namespace Quicker.Models
         {
             return Matches.TryGetValue(key, out result);
         }
-
-
     }
 }
