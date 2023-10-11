@@ -25,12 +25,12 @@ namespace Quicker.Models
         {
             return input == keyword;
         }
-        public void Perform(ref IKeyboardEventSource Keyboard, string? OptionalText, bool isPlural)
+        public void Perform(ref IKeyboardEventSource Keyboard, string? OptionalText, bool isPlural, int AdditionalDelete)
         {
             var ToSend = Simulate.Events();
-            System.Diagnostics.Debug.WriteLine(keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Length));
+            //System.Diagnostics.Debug.WriteLine(keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Length));
 
-            for (int i = 0; i < keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Trim().Length) + (isPlural ? 1 : 0); i++)
+            for (int i = 0; i < keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Trim().Length) + (isPlural ? 1 : 0)+AdditionalDelete; i++)
             {
                 ToSend.Click(KeyCode.Backspace);
             }

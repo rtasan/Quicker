@@ -109,7 +109,18 @@ namespace Quicker.Commands
                 var result = new Match("", ""); //findした結果が代入される変数
                 string value;
                 bool isPlural = false;
-                if (KeyList.EndsWith("s"))
+                int AdditionalDelete = 0;
+                if (KeyList.Contains('/'))
+                {
+                    if (KeyList.EndsWith("/s"))
+                    {
+                        isPlural = true;
+                        KeyList = KeyList.Remove(KeyList.Length - 1);
+                    }
+                    KeyList = KeyList.Remove(KeyList.Length - 1);
+                    AdditionalDelete = 1;
+                }
+                else if (KeyList.EndsWith("s"))
                 {
                     isPlural = true;
                     KeyList = KeyList.Remove(KeyList.Length - 1);
@@ -119,7 +130,7 @@ namespace Quicker.Commands
                     KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
                     if (m_list.FindMatch(KeyList, ref result))
                     {
-                        result.Perform(ref this.m_Keyboard, value, isPlural);
+                        result.Perform(ref this.m_Keyboard, value, isPlural, 0);
                     }
                 }
                 else if (KeyList.EndsWith("#"))
@@ -129,7 +140,7 @@ namespace Quicker.Commands
                 }
                 else if (m_list.FindMatch(KeyList, ref result))
                 {
-                    result.Perform(ref this.m_Keyboard, null, isPlural);
+                    result.Perform(ref this.m_Keyboard, null, isPlural, AdditionalDelete);
                 }
                 KeyList = "";
             }

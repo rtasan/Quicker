@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Quicker.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Quicker.ViewModels;
 using System.Windows.Input;
+using Microsoft.Win32;
+using System.Windows;
 
 namespace Quicker.Commands
 {
-    public class DisableMatchCommand:ICommand
+    public class BrowserMatchCommand:ICommand
     {
         /// <summary>
         /// コマンドを読み出す側のクラス（View Model）を保持するプロパティ
@@ -20,7 +22,7 @@ namespace Quicker.Commands
         /// コマンドで処理したいクラス(View Modeo)をここで受け取る
         /// </summary>
         /// <param name="view"></param>
-        public DisableMatchCommand(MatchViewModel view)
+        public BrowserMatchCommand(MatchViewModel view)
         {
             _view = view;
         }
@@ -47,10 +49,24 @@ namespace Quicker.Commands
             return true;
         }
 
-        //_vmのKeyboardインスタンスから、Unsubscribeメソッドを呼び出す
+        //Command実行時の処理
         public void Execute(object? parameter)
         {
-            _view.Keyboard.Unsubscribe();
+            //_view.Keyboard.Unsubscribe();
+            //ファイル選択ダイアログを表示する
+            // ダイアログのインスタンスを生成
+            var dialog = new OpenFileDialog();
+
+            // ファイルの種類を設定
+            dialog.Filter = "CSVファイル (*.csv)|*.csv|全てのファイル (*.*)|*.*";
+
+            // ダイアログを表示する
+            if (dialog.ShowDialog() == true)
+            {
+                // 選択されたファイル名 (ファイルパス) をCsvFileのプロパティにセットする
+                _view.CsvFilePath = dialog.FileName;
+                _view.MatchList.FromCsv(_view.CsvFile);
+            }
         }
     }
 }
