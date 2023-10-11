@@ -32,11 +32,11 @@ namespace Quicker.ViewModels
         public EnableMatchCommand EnableMatchCommand { get; private set; }
         public DisableMatchCommand DisableMatchCommand { get; private set; }
         public BrowserCommand BrowserCommand { get; private set; }
+        public ToggleCommand ToggleCommand { get; private set; }
 
         //Modelのインスタンスを保持するプロパティ
         public Keyboard Keyboard { get; set; }
         public MatchList MatchList { get; set; }
-        private MatchList m_list { get; set;}
         public CsvFile CsvFile { get; set;}
 
         public MatchViewModel()
@@ -44,10 +44,11 @@ namespace Quicker.ViewModels
             EnableMatchCommand = new EnableMatchCommand(this);
             DisableMatchCommand = new DisableMatchCommand(this);
             BrowserCommand = new BrowserCommand(this);
-            this.m_list = new MatchList();
+            ToggleCommand = new ToggleCommand(this);
+            //this.m_list = new MatchList();
             //m_list.FromCsv("C:\\Users\\Reiko\\Desktop\\test.csv");
-            Keyboard = new Keyboard(this.m_list);
             MatchList = new MatchList();
+            //Keyboard = new Keyboard(MatchList);
             CsvFile = new CsvFile();
         }
 

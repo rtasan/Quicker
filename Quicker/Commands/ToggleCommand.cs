@@ -1,22 +1,85 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Quicker.Models;
+using Quicker.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsInput.Events.Sources;
+using System.Windows.Input;
 using WindowsInput.Events;
+using WindowsInput.Events.Sources;
 
-namespace Quicker.Models
+namespace Quicker.Commands
 {
-    public class Keyboard
+    public class ToggleCommand:ICommand
     {
         public IKeyboardEventSource? m_Keyboard;
         private string KeyList = "";
-        private MatchList m_list;
+        private MatchList? m_list;
+        /// <summary>
+        /// コマンドを読み出す側のクラス（View Model）を保持するプロパティ
+        /// </summary>
+        private MatchViewModel _view { get; set; }
 
-        public Keyboard(MatchList matchList)
+        /// <summary>
+        /// コンストラクタ
+        /// コマンドで処理したいクラス(View Modeo)をここで受け取る
+        /// </summary>
+        /// <param name="view"></param>
+        public ToggleCommand(MatchViewModel view)
         {
-            this.m_list = matchList;
+            _view = view;
+        }
+
+        /// <summary>
+        /// コマンドのルールとして必ず実装しておくイベントハンドラ
+        /// 通常、このメソッドを丸ごとコピーすればOK
+        /// </summary>
+        public event EventHandler? CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        /// <summary>
+        /// コマンドの有効／無効を判定するメソッド
+        /// コマンドのルールとして必ず実装しておくメソッド
+        /// 有効／無効を制御する必要が無ければ、無条件にTrueを返しておく
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        //Command実行時の処理
+        public void Execute(object? parameter)
+        {
+            if((bool)parameter)
+            {
+                m_list= _view.MatchList;
+                Subscribe();
+            }
+            else
+            {
+                Unsubscribe();
+            }
+        }
+
+        public void Subscribe()
+        {
+            //var Keyboard = default(IKeyboardEventSource);
+            var Keyboard = WindowsInput.Capture.Global.Keyboard();
+
+            Subscribe(Keyboard);
+        }
+
+        public void Unsubscribe()
+        {
+            //TODO: Unsubscribe
+            this.m_Keyboard?.Dispose();
         }
 
         private void Subscribe(IKeyboardEventSource Keyboard)
@@ -29,10 +92,12 @@ namespace Quicker.Models
                 Keyboard.KeyEvent += this.Keyboard_KeyEvent;
             }
         }
+
         private static Dictionary<string, string> KeyPair = new Dictionary<string, string>()
         {
             {"),","),"},{").","). "},{",",","},{".",". "},{")",")"}
         };
+
         private void Keyboard_KeyEvent(object? sender, EventSourceEventArgs<KeyboardEvent> e)
         {
             //System.Diagnostics.Debug.WriteLine(e.Data);
@@ -81,18 +146,7 @@ namespace Quicker.Models
             }
         }
 
-        public void Subscribe()
-        {
-            //var Keyboard = default(IKeyboardEventSource);
-            var Keyboard = WindowsInput.Capture.Global.Keyboard();
+       
 
-            Subscribe(Keyboard);
-        }
-
-        public void Unsubscribe()
-        {
-            //TODO: Unsubscribe
-            this.m_Keyboard?.Dispose();
-        }
     }
 }

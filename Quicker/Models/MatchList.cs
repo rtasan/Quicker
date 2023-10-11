@@ -15,10 +15,9 @@ namespace Quicker.Models
         {
             Matches = new Dictionary<string, Match>();
         }
-        public bool FromCsv(string path)
+        public bool FromCsv(CsvFile csvFile)
         {
-            CsvFile csv = new CsvFile(path);
-            Matches = csv.ReadCsv(); //Todo: 読み込みに失敗したときの処理でfalseを返す
+            Matches = csvFile.ReadCsv(); //Todo: 読み込みに失敗したときの処理でfalseを返す
             return true;
         }
         public bool append(string key, Match match)

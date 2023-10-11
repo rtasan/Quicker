@@ -23,7 +23,7 @@ namespace Quicker.Models
         }
         public void SetCsvPath(string path)
         {
-            this.CsvPath = "Hello";//path;
+            this.CsvPath = path;
         }
 
         public Dictionary<string, Match> ReadCsv()
