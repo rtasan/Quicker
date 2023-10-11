@@ -16,7 +16,6 @@ namespace Quicker.Commands
     {
         public IKeyboardEventSource? m_Keyboard;
         private string KeyList = "";
-        private MatchList? m_list;
         /// <summary>
         /// コマンドを読み出す側のクラス（View Model）を保持するプロパティ
         /// </summary>
@@ -59,7 +58,6 @@ namespace Quicker.Commands
         {
             if((bool)parameter)
             {
-                m_list= _view.MatchList;
                 Subscribe();
             }
             else
@@ -128,7 +126,7 @@ namespace Quicker.Commands
                 if (KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(KeyList.Substring(KeyList.Length - 1), out value))
                 {
                     KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
-                    if (m_list.FindMatch(KeyList, ref result))
+                    if (_view.MatchList.FindMatch(KeyList, ref result))
                     {
                         result.Perform(ref this.m_Keyboard, value, isPlural, 0);
                     }
@@ -138,7 +136,7 @@ namespace Quicker.Commands
                     KeyList = KeyList.Remove(KeyList.Length - 1);
                     result.OnlyNumber(ref this.m_Keyboard, null, KeyList);
                 }
-                else if (m_list.FindMatch(KeyList, ref result))
+                else if (_view.MatchList.FindMatch(KeyList, ref result))
                 {
                     result.Perform(ref this.m_Keyboard, null, isPlural, AdditionalDelete);
                 }

@@ -40,8 +40,6 @@ namespace Quicker.ViewModels
         {
             BrowserCommand = new BrowserMatchCommand(this);
             ToggleCommand = new ToggleCommand(this);
-            //this.m_list = new MatchList();
-            //m_list.FromCsv("C:\\Users\\Reiko\\Desktop\\test.csv");
             MatchList = new MatchList();
             CsvFile = new CsvFile();
         }

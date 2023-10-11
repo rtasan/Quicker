@@ -12,9 +12,9 @@
         <vm:MatchViewModel/>
     </Window.DataContext>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="95,92,0,0" TextWrapping="Wrap" Text="{Binding CsvFilePath}" VerticalAlignment="Top" Width="515"/>
-        <Button Content="参照" HorizontalAlignment="Left" Margin="633,91,0,0" VerticalAlignment="Top" Command="{Binding BrowserCommand}"/>
-        <ToggleButton Content="On/Off" IsChecked="False" Command="{Binding ToggleCommand}" CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}" Margin="342,249,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></ToggleButton>
-
+        <TextBox HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding CsvFilePath}" VerticalAlignment="Top" Width="515"/>
+        <Button Content="参照" HorizontalAlignment="Left" Margin="551,10,0,0" VerticalAlignment="Top" Command="{Binding BrowserCommand}"/>
+        <ToggleButton Content="On/Off" IsChecked="False" Command="{Binding ToggleCommand}" CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}" Margin="687,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></ToggleButton>
+        <DataGrid ItemsSource="{Binding MatchList.Matches}" Margin="10,35,10,10"></DataGrid>
     </Grid>
 </Window>

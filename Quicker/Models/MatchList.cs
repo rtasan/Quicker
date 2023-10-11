@@ -9,11 +9,12 @@ namespace Quicker.Models
 {
     public class MatchList
     {
-        private Dictionary<string, Match> Matches;
+        public Dictionary<string, Match> Matches;
 
         public MatchList()
         {
             Matches = new Dictionary<string, Match>();
+            Matches.Add("test", new Match("11", "test"));
         }
         public bool FromCsv(CsvFile csvFile)
         {
