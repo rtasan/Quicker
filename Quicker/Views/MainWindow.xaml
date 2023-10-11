@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Quicker"
+        xmlns:vm="clr-namespace:Quicker.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        >
+    <Window.DataContext>
+        <vm:MatchViewModel/>
+    </Window.DataContext>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="95,92,0,0" TextWrapping="Wrap" Text="Path to .csv" VerticalAlignment="Top" Width="515"/>
+        <TextBox HorizontalAlignment="Left" Margin="95,92,0,0" TextWrapping="Wrap" Text="{Binding CsvFilePath}" VerticalAlignment="Top" Width="515"/>
         <Button Content="On/Off" HorizontalAlignment="Center" Margin="0,331,0,0" VerticalAlignment="Top"/>
-        <Button Content="参照" HorizontalAlignment="Left" Margin="633,91,0,0" VerticalAlignment="Top"/>
+        <Button Content="参照" HorizontalAlignment="Left" Margin="633,91,0,0" VerticalAlignment="Top" Command="{Binding BrowserCommand}"/>
 
     </Grid>
 </Window>

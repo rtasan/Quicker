@@ -8,7 +8,7 @@ using System;
 
 namespace Quicker.Commands
 {
-    internal class EnableMatchCommand: ICommand
+    public class EnableMatchCommand: ICommand
     {
         /// <summary>
         /// コマンドを読み出す側のクラス（View Model）を保持するプロパティ

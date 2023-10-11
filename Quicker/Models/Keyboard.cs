@@ -8,7 +8,7 @@ using WindowsInput.Events;
 
 namespace Quicker.Models
 {
-    internal class Keyboard
+    public class Keyboard
     {
         public IKeyboardEventSource? m_Keyboard;
         private string KeyList = "";
@@ -92,6 +92,7 @@ namespace Quicker.Models
         public void Unsubscribe()
         {
             //TODO: Unsubscribe
+            this.m_Keyboard?.Dispose();
         }
     }
 }

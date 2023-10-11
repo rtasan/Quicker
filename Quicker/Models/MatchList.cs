@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Quicker.Models
 {
-    internal class MatchList
+    public class MatchList
     {
         private Dictionary<string, Match> Matches;
 

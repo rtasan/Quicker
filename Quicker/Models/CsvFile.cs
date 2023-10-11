@@ -9,12 +9,21 @@ using System.Windows.Shapes;
 
 namespace Quicker.Models
 {
-    internal class CsvFile
+    public class CsvFile
     {
-        private string CsvPath;
+        public string CsvPath;
+
+        public CsvFile()
+        {
+            this.CsvPath = "";
+        }
         public CsvFile(string path)
         {
             this.CsvPath = path;
+        }
+        public void SetCsvPath(string path)
+        {
+            this.CsvPath = "Hello";//path;
         }
 
         public Dictionary<string, Match> ReadCsv()

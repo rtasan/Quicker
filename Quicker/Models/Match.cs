@@ -11,7 +11,7 @@ using Humanizer;
 
 namespace Quicker.Models
 {
-    internal class Match
+    public class Match
     {
         private string keyword { get; set; }
         private string snippet { get; set; }

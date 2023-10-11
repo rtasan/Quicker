@@ -26,17 +26,17 @@ namespace Quicker.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public IKeyboardEventSource m_Keyboard;
-        private string KeyList = "";
-        private MatchList m_list;
+        //public IKeyboardEventSource m_Keyboard;
+        //private string KeyList = "";
+        //private MatchList m_list;
 
         public MainWindow()
         {
             InitializeComponent();
-            Subscribe();
-            this.m_list = new MatchList("C:\\Users\\Reiko\\Desktop\\test.csv");
+            //Subscribe();
+            //this.m_list = new MatchList("C:\\Users\\Reiko\\Desktop\\test.csv");
         }
-
+        /*
         private void Subscribe(IKeyboardEventSource Keyboard)
         {
             this.m_Keyboard?.Dispose();
@@ -105,6 +105,7 @@ namespace Quicker.Views
 
             Subscribe(Keyboard);
         }
+        */
 
     }
     
