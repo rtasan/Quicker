@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Humanizer;
 
 namespace Quicker.Models
 {
@@ -19,33 +20,37 @@ namespace Quicker.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        private Dictionary<string, Match> _matches;
-        public Dictionary<string, Match> Matches
+        private List<Match> matchesList;
+        public List<Match> MatchesList
         {
             get
             {
-                return _matches;
+                return matchesList;
             }
             set
             {
-                _matches = value;
+                matchesList = value;
                 NotifyPropertyChanged();
             }
         }
 
         public MatchList()
         {
-            Matches = new Dictionary<string, Match>();
+            MatchesList = new List<Match>();
+            string __= "".Pluralize(); //Humanizerの初回呼び出しが遅れるので、一度呼び出しておく
         }
-        //public bool FromCsv(CsvFile csvFile)
-        //{
-        //    Matches = csvFile.ReadCsv(); //Todo: 読み込みに失敗したときの処理でfalseを返す
-        //    //NotifyPropertyChanged();
-        //    return true;
-        //}
+
         public bool FindMatch(string key, ref Match result)
         {
-            return _matches.TryGetValue(key, out result);
+            result = matchesList.Find(x => x.keyword == key);
+            if (result == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

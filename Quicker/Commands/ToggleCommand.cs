@@ -123,7 +123,7 @@ namespace Quicker.Commands
                     isPlural = true;
                     KeyList = KeyList.Remove(KeyList.Length - 1);
                 }
-                if (KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(KeyList.Substring(KeyList.Length - 1), out value))
+                 if (KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(((KeyList.Length >= 1) ? KeyList.Substring(KeyList.Length - 1) : ""), out value))
                 {
                     KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
                     if (_view.MatchList.FindMatch(KeyList, ref result))

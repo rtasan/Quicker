@@ -13,12 +13,13 @@ namespace Quicker.Models
 {
     public class Match
     {
-        private string keyword { get; set; }
-        public string snippet { get; set; }
+        public string keyword { get; set; }
+        private string _snippet;
+        public string Snippet { get { return _snippet; } set { _snippet = value; } }
         public Match(string keyword, string snippet)
         {
             this.keyword = keyword;
-            this.snippet = snippet;
+            this._snippet = snippet;
         }
 
         public bool isMatch(ref string input)
@@ -35,7 +36,7 @@ namespace Quicker.Models
                 ToSend.Click(KeyCode.Backspace);
             }
 
-            ToSend.Click((isPlural ? snippet.Pluralize() : snippet) + " " + keyword + OptionalText);
+            ToSend.Click(((isPlural) ? _snippet.Pluralize() : _snippet) + " " + keyword + OptionalText);
 
             using (Keyboard.Suspend())
             {
