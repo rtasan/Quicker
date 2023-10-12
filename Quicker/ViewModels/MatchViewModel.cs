@@ -34,7 +34,7 @@ namespace Quicker.ViewModels
 
         //Modelのインスタンスを保持するプロパティ
         public MatchList MatchList { get; set; }
-        public CsvFile CsvFile { get; set;}
+        public CsvFile CsvFile { get; set; }
 
         public MatchViewModel()
         {
@@ -65,5 +65,6 @@ namespace Quicker.ViewModels
                 NotifyPropertyChanged();
             }
         }
-    }
+        
+    }        
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Win32;
 using System.Windows;
+using Quicker.Models;
 
 namespace Quicker.Commands
 {
@@ -65,7 +66,8 @@ namespace Quicker.Commands
             {
                 // 選択されたファイル名 (ファイルパス) をCsvFileのプロパティにセットする
                 _view.CsvFilePath = dialog.FileName;
-                _view.MatchList.FromCsv(_view.CsvFile);
+                _view.MatchList.Matches = _view.CsvFile.ReadCsv();
+                //_view.MatchList.FromCsv(_view.CsvFile);
             }
         }
     }
