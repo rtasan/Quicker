@@ -29,7 +29,8 @@ namespace Quicker.Views
         public MainWindow()
         {
             InitializeComponent();
-        }        
+            //TODO: https://youtu.be/U7Qclpe2joo?si=RGN9qF6mPBhG9hMv
+        }
     }
     
     
