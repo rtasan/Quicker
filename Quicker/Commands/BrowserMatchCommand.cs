@@ -66,7 +66,6 @@ namespace Quicker.Commands
             {
                 // 選択されたファイル名 (ファイルパス) をCsvFileのプロパティにセットする
                 _view.CsvFilePath = dialog.FileName;
-                //_view.MatchList.Matches = _view.CsvFile.ReadCsv();
                 _view.MatchList.MatchesList = _view.CsvFile.ReadCsv();
             }
         }

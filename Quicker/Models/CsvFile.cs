@@ -27,26 +27,6 @@ namespace Quicker.Models
             this.CsvPath = path;
         }
 
-        //public List<Match> ReadCsv()
-        //{
-        //    //var Matches = new Dictionary<string, Match>();
-        //    var MatchList = new List<Match>();
-        //    using (var reader = new StreamReader(CsvPath))
-        //    {
-        //        while (!reader.EndOfStream)
-        //        {
-        //            var line = reader.ReadLine();
-        //            var values = line.Split(',');
-        //            var keyword = values[0].Trim();
-        //            var snippet = values[1].Trim();
-        //            Match match = new Match(keyword, snippet);
-        //            //Matches.TryAdd(values[0].Trim(), match);
-        //            MatchList.Add(match);
-        //        }
-        //    }
-        //    //return Matches;
-        //    return MatchList;
-        //}
         public ObservableCollection<Match> ReadCsv()
         {
             var MatchList = new ObservableCollection<Match>();
@@ -59,11 +39,9 @@ namespace Quicker.Models
                     var keyword = values[0].Trim();
                     var snippet = values[1].Trim();
                     Match match = new Match(keyword, snippet);
-                    //Matches.TryAdd(values[0].Trim(), match);
                     MatchList.Add(match);
                 }
             }
-            //return Matches;
             return MatchList;
         }
     }

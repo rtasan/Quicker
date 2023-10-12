@@ -1,10 +1,5 @@
-﻿using Microsoft.Win32;
-using Quicker.ViewModels;
+﻿using Quicker.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Quicker.Models;
 
@@ -52,7 +47,7 @@ namespace Quicker.Commands
         //Command実行時の処理
         public void Execute(object? parameter)
         {
-            var EmptyMatch=new Match("Key","Value");
+            var EmptyMatch=new Match("","");
             _view.MatchList.AddMatch(EmptyMatch);
         }
     }

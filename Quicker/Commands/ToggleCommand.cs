@@ -68,7 +68,6 @@ namespace Quicker.Commands
 
         public void Subscribe()
         {
-            //var Keyboard = default(IKeyboardEventSource);
             var Keyboard = WindowsInput.Capture.Global.Keyboard();
 
             Subscribe(Keyboard);
@@ -76,7 +75,6 @@ namespace Quicker.Commands
 
         public void Unsubscribe()
         {
-            //TODO: Unsubscribe
             this.m_Keyboard?.Dispose();
         }
 
