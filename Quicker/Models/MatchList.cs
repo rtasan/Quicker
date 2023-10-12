@@ -36,7 +36,6 @@ namespace Quicker.Models
         public MatchList()
         {
             Matches = new Dictionary<string, Match>();
-            Matches.TryAdd("105", new Match("105", "test"));
         }
         //public bool FromCsv(CsvFile csvFile)
         //{

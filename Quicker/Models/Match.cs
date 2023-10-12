@@ -14,7 +14,7 @@ namespace Quicker.Models
     public class Match
     {
         private string keyword { get; set; }
-        private string snippet { get; set; }
+        public string snippet { get; set; }
         public Match(string keyword, string snippet)
         {
             this.keyword = keyword;
