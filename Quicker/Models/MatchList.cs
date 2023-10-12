@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Humanizer;
 
 namespace Quicker.Models
@@ -20,8 +22,8 @@ namespace Quicker.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        private List<Match> matchesList;
-        public List<Match> MatchesList
+        private ObservableCollection<Match> matchesList;
+        public ObservableCollection<Match> MatchesList
         {
             get
             {
@@ -36,13 +38,18 @@ namespace Quicker.Models
 
         public MatchList()
         {
-            MatchesList = new List<Match>();
+            MatchesList = new ObservableCollection<Match>();
             string __= "".Pluralize(); //Humanizerの初回呼び出しが遅れるので、一度呼び出しておく
+        }
+
+        public void AddMatch(Match match)
+        {
+            this.MatchesList.Add(match);
         }
 
         public bool FindMatch(string key, ref Match result)
         {
-            result = matchesList.Find(x => x.keyword == key);
+            result=matchesList.FirstOrDefault(x => x.keyword == key);
             if (result == null)
             {
                 return false;

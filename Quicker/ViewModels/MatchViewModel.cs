@@ -31,6 +31,7 @@ namespace Quicker.ViewModels
         //コマンドを格納するプロパティ
         public BrowserMatchCommand BrowserCommand { get; private set; }
         public ToggleCommand ToggleCommand { get; private set; }
+        public AddNewMatchCommand AddNewMatchCommand { get; private set; }
 
         //Modelのインスタンスを保持するプロパティ
         public MatchList MatchList { get; set; }
@@ -40,6 +41,7 @@ namespace Quicker.ViewModels
         {
             BrowserCommand = new BrowserMatchCommand(this);
             ToggleCommand = new ToggleCommand(this);
+            AddNewMatchCommand = new AddNewMatchCommand(this);
             MatchList = new MatchList();
             CsvFile = new CsvFile();
         }
