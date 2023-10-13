@@ -18,6 +18,7 @@ using WindowsInput.Events.Sources;
 using WindowsInput.Events;
 using System.IO;
 using Quicker.Models;
+using Quicker.ViewModels;
 
 namespace Quicker.Views
 {
@@ -29,7 +30,14 @@ namespace Quicker.Views
         public MainWindow()
         {
             InitializeComponent();
-            //TODO: https://youtu.be/U7Qclpe2joo?si=RGN9qF6mPBhG9hMv
+            Closing += Window_Closing;
+        }
+        void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is IClosing context)
+            {
+                e.Cancel = !context.OnClosing();
+            }
         }
     }
     

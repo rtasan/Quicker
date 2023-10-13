@@ -44,5 +44,21 @@ namespace Quicker.Models
             }
             return MatchList;
         }
+
+        public bool WriteCsv(MatchList matchList)
+        {
+            if(!File.Exists(CsvPath))
+            {
+                return false;
+            }
+            using (var writer = new StreamWriter(CsvPath))
+            {
+                foreach (var match in matchList.MatchesList)
+                {
+                    writer.WriteLine(match.keyword + "," + match.Snippet);
+                }
+            }
+            return true;
+        }
     }
 }
