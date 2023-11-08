@@ -106,39 +106,31 @@ namespace Quicker.Commands
                 string value;
                 bool isPlural = false;
                 int AdditionalDelete = 0;
-                if (KeyList.Contains('/'))
+                string addText = "";
+
+                //末尾の記号をチェック、あればaddTextにいれ、KeyListから削除
+                if(KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(((KeyList.Length >= 1) ? KeyList.Substring(KeyList.Length - 1) : ""), out value))
                 {
-                    if (KeyList.EndsWith("/s"))
-                    {
-                        isPlural = true;
-                        KeyList = KeyList.Remove(KeyList.Length - 1);
-                    }
-                    KeyList = KeyList.Remove(KeyList.Length - 1);
-                    AdditionalDelete = 1;
+                    KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
+                    addText = value;
                 }
-                else if (KeyList.EndsWith("s"))
+                //末尾にsがあるかチェック、あればisPluralをtrueにし、KeyListから削除          
+                if (KeyList.EndsWith("s"))
                 {
                     isPlural = true;
                     KeyList = KeyList.Remove(KeyList.Length - 1);
-                }
-                 if (KeyPair.TryGetValue(((KeyList.Length >= 2) ? KeyList.Substring(KeyList.Length - 2) : ""), out value) || KeyPair.TryGetValue(((KeyList.Length >= 1) ? KeyList.Substring(KeyList.Length - 1) : ""), out value))
-                {
-                    KeyList = KeyList.Remove(KeyList.Length - value.Trim().Length);
-                    if (_view.MatchList.FindMatch(KeyList, ref result))
-                    {
-                        result.Perform(ref this.m_Keyboard, value, isPlural, 0);
-                    }
                 }
                 else if (KeyList.EndsWith("#"))
                 {
                     KeyList = KeyList.Remove(KeyList.Length - 1);
                     result.OnlyNumber(ref this.m_Keyboard, null, KeyList);
                 }
-                else if (_view.MatchList.FindMatch(KeyList, ref result))
+
+                if (_view.MatchList.FindMatch(KeyList, ref result))
                 {
-                    result.Perform(ref this.m_Keyboard, null, isPlural, AdditionalDelete);
+                    result.Perform(ref this.m_Keyboard, value, isPlural, 0);
                 }
-                KeyList = "";
+                KeyList= "";               
             }
             else if (e.Data.KeyDown?.Key == KeyCode.Backspace)
             {

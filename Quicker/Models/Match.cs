@@ -29,14 +29,18 @@ namespace Quicker.Models
         public void Perform(ref IKeyboardEventSource Keyboard, string? OptionalText, bool isPlural, int AdditionalDelete)
         {
             var ToSend = Simulate.Events();
+            string key = keyword;
             //System.Diagnostics.Debug.WriteLine(keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Length));
 
             for (int i = 0; i < keyword.Length + (string.IsNullOrEmpty(OptionalText) ? 0 : OptionalText.Trim().Length) + (isPlural ? 1 : 0)+AdditionalDelete; i++)
             {
                 ToSend.Click(KeyCode.Backspace);
             }
-
-            ToSend.Click(((isPlural) ? _snippet.Pluralize() : _snippet) + " " + keyword + OptionalText);
+            if (keyword.EndsWith("/"))
+            {
+                key=keyword.Remove(key.Length-1);
+            }
+            ToSend.Click(((isPlural) ? _snippet.Pluralize() : _snippet) + " " + key + OptionalText);
 
             using (Keyboard.Suspend())
             {
